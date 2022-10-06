@@ -389,7 +389,8 @@ fun russian(n: Int): String {
     if (n > 999) {
         val checkForThousands = n % 100000 / 1000
         when {
-            checkForThousands % 10 == 1 && checkForThousands != 11 -> s.add("тысячa")
+            checkForThousands in 11..14 -> s.add("тысяч")
+            checkForThousands % 10 == 1 -> s.add("тысячa")
             checkForThousands % 10 in 2..4 -> s.add("тысячи")
             else -> s.add("тысяч")
         }
