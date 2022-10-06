@@ -173,8 +173,10 @@ fun times(a: List<Int>, b: List<Int>): Int {
  */
 fun polynom(p: List<Int>, x: Int): Int {
     var value = 0.0
+    var count = 0
     for (element in p) {
-        value += element * x.toDouble().pow(p.indexOf(element))
+        value += element * x.toDouble().pow(count)
+        count++
     }
     return value.toInt()
 }
@@ -246,6 +248,7 @@ fun convert(n: Int, base: Int): List<Int> {
         finalNumbers.add(d)
         number /= base
     }
+    if (n == 0) finalNumbers.add(0)
     return finalNumbers.reversed()
 }
 
@@ -261,17 +264,18 @@ fun convert(n: Int, base: Int): List<Int> {
  * (например, n.toString(base) и подобные), запрещается.
  */
 fun convertToString(n: Int, base: Int): String {
-    val alphabet = listOf('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
-        's', 't', 'u', 'v', 'w', 'x', 'y', 'z')
+    val alphabet = listOf("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r",
+        "s", "t", "u", "v", "w", "x", "y", "z")
     var line = ""
     var number = n
     while (number > 0) {
         val d = number % base
         var symbol = "$d"
-        if (d > 9) symbol = alphabet[d - 10].toString()
+        if (d > 9) symbol = alphabet[d - 10]
         line += symbol
         number /= base
     }
+    if (n == 0) line += "0"
     return line.reversed()
 }
 
@@ -306,13 +310,13 @@ fun decimal(digits: List<Int>, base: Int): Int {
  * (например, str.toInt(base)), запрещается.
  */
 fun decimalFromString(str: String, base: Int): Int {
-    val alphabet = listOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
-        'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z')
+    val alphabet = listOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f", "g", "h",
+        "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z")
     val newStr = str.reversed()
     var pow = 1
     var number = 0
     for (element in newStr) {
-        val index = alphabet.indexOf(element)
+        val index = alphabet.indexOf(element.toString())
         number += index * pow
         pow *= base
     }
@@ -385,7 +389,7 @@ fun russian(n: Int): String {
     if (n > 999) {
         val checkForThousands = n % 100000 / 1000
         when {
-            checkForThousands % 10 == 1 -> s.add("тысячa")
+            checkForThousands % 10 == 1 && checkForThousands != 11 -> s.add("тысячa")
             checkForThousands % 10 in 2..4 -> s.add("тысячи")
             else -> s.add("тысяч")
         }
