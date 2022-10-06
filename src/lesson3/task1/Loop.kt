@@ -160,10 +160,13 @@ fun collatzSteps(x: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
-    for (i in 1 until m * n) {
-        if (i % m == 0 && i % n == 0) return i
+    var m2 = m
+    var n2 = n
+    while (m2 != n2) {
+        if (n2 > m2) n2 -= m2
+        else m2 -= n2
     }
-    return m * n
+    return m * n / m2
 }
 
 /**
@@ -240,11 +243,8 @@ fun hasDifferentDigits(n: Int): Boolean {
  * Использовать kotlin.math.sin и другие стандартные реализации функции синуса в этой задаче запрещается.
  */
 fun sin(x: Double, eps: Double): Double {
-    var sinx = Math.toDegrees(x)
-    while (sinx >= 360.0) {
-        sinx -= 360.0
-    }
-    sinx = Math.toRadians(sinx)
+    var sinx = x
+    if (sinx > 2 * PI) sinx %= 2 * PI
     var count = 3
     var i = 1
     var step = sinx
@@ -268,11 +268,8 @@ fun sin(x: Double, eps: Double): Double {
  * Использовать kotlin.math.cos и другие стандартные реализации функции косинуса в этой задаче запрещается.
  */
 fun cos(x: Double, eps: Double): Double {
-    var cosx = Math.toDegrees(x)
-    while (cosx >= 360.0) {
-        cosx -= 360.0
-    }
-    cosx = Math.toRadians(cosx)
+    var cosx = x
+    if (cosx > 2 * PI) cosx %= 2 * PI
     var count = 2
     var i = 1
     var step = cosx
@@ -298,7 +295,7 @@ fun cos(x: Double, eps: Double): Double {
 fun squareSequenceDigit(n: Int): Int {
     var countNow = 0
     var firstDigit = 0
-    for (i in 1..100) {
+    for (i in 1..1000) {
         val number = i * i
         var step = 1
         var countOfNumbers = 0
