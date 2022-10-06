@@ -218,6 +218,7 @@ class Tests {
     @Test
     @Tag("4")
     fun squareSequenceDigit() {
+        assertEquals(1, squareSequenceDigit(6000))
         assertEquals(4, squareSequenceDigit(915))
         assertEquals(1, squareSequenceDigit(1))
         assertEquals(4, squareSequenceDigit(2))

@@ -244,7 +244,12 @@ fun hasDifferentDigits(n: Int): Boolean {
  */
 fun sin(x: Double, eps: Double): Double {
     var sinx = x
-    if (sinx > 2 * PI) sinx %= 2 * PI
+    while (sinx > 2 * PI) {
+        sinx -= 2 * PI
+    }
+    while (sinx < 0) {
+        sinx += 2 * PI
+    }
     var count = 3
     var i = 1
     var step = sinx
@@ -269,7 +274,12 @@ fun sin(x: Double, eps: Double): Double {
  */
 fun cos(x: Double, eps: Double): Double {
     var cosx = x
-    if (cosx > 2 * PI) cosx %= 2 * PI
+    while (cosx > 2 * PI) {
+        cosx -= 2 * PI
+    }
+    while (cosx < 0) {
+        cosx += 2 * PI
+    }
     var count = 2
     var i = 1
     var step = cosx
@@ -295,7 +305,7 @@ fun cos(x: Double, eps: Double): Double {
 fun squareSequenceDigit(n: Int): Int {
     var countNow = 0
     var firstDigit = 0
-    for (i in 1..1000) {
+    for (i in 1..n) {
         val number = i * i
         var step = 1
         var countOfNumbers = 0
@@ -328,7 +338,7 @@ fun squareSequenceDigit(n: Int): Int {
 fun fibSequenceDigit(n: Int): Int {
     var countNow = 0
     var firstDigit = 0
-    for (i in 1..100) {
+    for (i in 1..n) {
         val number = fib(i)
         var step = 1
         var countOfNumbers = 0
