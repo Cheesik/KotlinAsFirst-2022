@@ -139,7 +139,7 @@ fun mean(list: List<Double>): Double = if (list.isNotEmpty()) list.sum() / list.
  */
 fun center(list: MutableList<Double>): MutableList<Double> {
     if (list.isNotEmpty()) {
-        val average = list.sum() / list.size
+        val average = mean(list)
         for (i in 0 until list.size) {
             val element = list[i] - average
             list[i] = element
@@ -211,10 +211,12 @@ fun accumulate(list: MutableList<Int>): MutableList<Int> {
 fun factorize(n: Int): List<Int> {
     val multipliers = mutableListOf<Int>()
     var number = n
-    while (multipliers.fold(1) { previousResult, element -> previousResult * element } != n) {
+    var resultNow = 1
+    while (resultNow != n) {
         for (i in 2..number) {
             if (number % i == 0) {
                 multipliers.add(i)
+                resultNow *= i
                 number /= i
                 break
             }
@@ -264,14 +266,12 @@ fun convert(n: Int, base: Int): List<Int> {
  * (например, n.toString(base) и подобные), запрещается.
  */
 fun convertToString(n: Int, base: Int): String {
-    val alphabet = listOf("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r",
-        "s", "t", "u", "v", "w", "x", "y", "z")
     var line = ""
     var number = n
     while (number > 0) {
         val d = number % base
-        var symbol = "$d"
-        if (d > 9) symbol = alphabet[d - 10]
+        var symbol = ""
+        if (d > 9) symbol += 'a' + (d - 10) else symbol += "$d"
         line += symbol
         number /= base
     }
@@ -332,15 +332,16 @@ fun decimalFromString(str: String, base: Int): Int {
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
 fun roman(n: Int): String {
-    var s = ""
-    val numbers = listOf(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
-    val romanNumbers = listOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
-    var number = n
-    while (number > 0) {
-        for (i in 0 until numbers.size) {
-            while (number >= numbers[i]) {
-                number -= numbers[i]
-                s += romanNumbers[i]
+    val s = buildString {
+        val numbers = listOf(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
+        val romanNumbers = listOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
+        var number = n
+        while (number > 0) {
+            for (i in 0 until numbers.size) {
+                while (number >= numbers[i]) {
+                    number -= numbers[i]
+                    append(romanNumbers[i])
+                }
             }
         }
     }

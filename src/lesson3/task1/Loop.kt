@@ -109,7 +109,7 @@ fun fib(n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    for (i in 2 until n) {
+    for (i in 2..sqrt(n.toDouble()).toInt()) {
         if (n % i == 0) return i
     }
     return n
@@ -144,11 +144,10 @@ fun collatzSteps(x: Int): Int {
     while (number > 1) {
         if (number % 2 == 0) {
             number /= 2
-            count++
         } else {
             number = 3 * number + 1
-            count++
         }
+        count++
     }
     return count
 }
@@ -177,7 +176,7 @@ fun lcm(m: Int, n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    for (i in 2..maxOf(m, n)) {
+    for (i in 2..minOf(m, n)) {
         if (m % i == 0 && n % i == 0) return false
     }
     return true
@@ -244,12 +243,7 @@ fun hasDifferentDigits(n: Int): Boolean {
  */
 fun sin(x: Double, eps: Double): Double {
     var sinx = x
-    while (sinx > 2 * PI) {
-        sinx -= 2 * PI
-    }
-    while (sinx < 0) {
-        sinx += 2 * PI
-    }
+    if (sinx > 2 * PI || sinx < 0) sinx %= 2 * PI
     var count = 3
     var i = 1
     var step = sinx
@@ -274,12 +268,7 @@ fun sin(x: Double, eps: Double): Double {
  */
 fun cos(x: Double, eps: Double): Double {
     var cosx = x
-    while (cosx > 2 * PI) {
-        cosx -= 2 * PI
-    }
-    while (cosx < 0) {
-        cosx += 2 * PI
-    }
+    if (cosx > 2 * PI || cosx < 0) cosx %= 2 * PI
     var count = 2
     var i = 1
     var step = cosx
@@ -307,14 +296,9 @@ fun squareSequenceDigit(n: Int): Int {
     var firstDigit = 0
     for (i in 1..n) {
         val number = i * i
-        var step = 1
-        var countOfNumbers = 0
-        while (10.0.pow(step).toInt() <= number) {
-            step++
-            countOfNumbers++
-        }
-        while (countOfNumbers > 0) {
-            firstDigit = number / 10.0.pow(countOfNumbers).toInt() % 10
+        var countOfNumbers = digitNumber(number)
+        while (countOfNumbers > 1) {
+            firstDigit = number / 10.0.pow(countOfNumbers - 1).toInt() % 10
             countNow++
             if (countNow == n) return firstDigit
             countOfNumbers--
@@ -340,14 +324,9 @@ fun fibSequenceDigit(n: Int): Int {
     var firstDigit = 0
     for (i in 1..n) {
         val number = fib(i)
-        var step = 1
-        var countOfNumbers = 0
-        while (10.0.pow(step).toInt() <= number) {
-            step++
-            countOfNumbers++
-        }
-        while (countOfNumbers > 0) {
-            firstDigit = number / 10.0.pow(countOfNumbers).toInt() % 10
+        var countOfNumbers = digitNumber(number)
+        while (countOfNumbers > 1) {
+            firstDigit = number / 10.0.pow(countOfNumbers - 1).toInt() % 10
             countNow++
             if (countNow == n) return firstDigit
             countOfNumbers--
