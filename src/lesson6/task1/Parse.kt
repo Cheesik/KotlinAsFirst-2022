@@ -2,6 +2,8 @@
 
 package lesson6.task1
 
+import lesson2.task2.daysInMonth
+
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
 // Рекомендуемое количество баллов = 11
@@ -62,7 +64,6 @@ fun main() {
     }
 }
 
-
 /**
  * Средняя (4 балла)
  *
@@ -74,7 +75,21 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    val months = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября",
+        "октября", "ноября", "декабря")
+    val parts = str.split(" ")
+    if (parts.size != 3) return ""
+    val day = parts[0].toInt()
+    var month = 0
+    for (i in 0 until months.size) {
+        if (months[i] == parts[1]) month = i + 1
+    }
+    if (month !in 1..12) return ""
+    val year = parts[2].toInt()
+    if (day >= daysInMonth(month, year)) return ""
+    else return String.format("%02d.%02d.%d", day, month, year)
+}
 
 /**
  * Средняя (4 балла)
@@ -86,7 +101,29 @@ fun dateStrToDigit(str: String): String = TODO()
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    val months = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября",
+        "октября", "ноября", "декабря")
+    val date = mutableListOf<String>()
+    val parts = digital.split(".")
+    if (parts.size != 3) return ""
+    for (number in parts) {
+        for (i in number) if (i.isDigit()) continue else return ""
+    }
+    var day = parts[0]
+    if (day.length == 2 && day[0] == '0') day = day[1].toString()
+    date.add(day)
+    var month = parts[1]
+    if (month.length == 2 && month[0] == '0') month = month[1].toString()
+    val monthNumber = month.toInt()
+    if (monthNumber !in 1..12) return ""
+    month = months[monthNumber - 1]
+    date.add(month)
+    val year = parts[2]
+    date.add(year)
+    if (day.toInt() >= daysInMonth(monthNumber, year.toInt())) return ""
+    else return date.joinToString(separator = " ")
+}
 
 /**
  * Средняя (4 балла)
@@ -175,7 +212,26 @@ fun mostExpensive(description: String): String = TODO()
  *
  * Вернуть -1, если roman не является корректным римским числом
  */
-fun fromRoman(roman: String): Int = TODO()
+fun fromRoman(roman: String): Int {
+    val numbers = listOf(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
+    val romanNumbers = listOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
+    var romanNumber = roman
+    var number = 0
+    while (romanNumber != "") {
+        var flag = true
+        for (symbol in romanNumbers) {
+            flag = false
+            if (romanNumber.startsWith(symbol)) {
+                number += numbers[romanNumbers.indexOf(symbol)]
+                romanNumber = romanNumber.substring(symbol.length)
+                flag = true
+                break
+            }
+        }
+        if (flag == false) return -1
+    }
+    return number
+}
 
 /**
  * Очень сложная (7 баллов)

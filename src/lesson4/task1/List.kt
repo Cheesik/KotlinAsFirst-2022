@@ -266,17 +266,18 @@ fun convert(n: Int, base: Int): List<Int> {
  * (например, n.toString(base) и подобные), запрещается.
  */
 fun convertToString(n: Int, base: Int): String {
-    var line = ""
-    var number = n
-    while (number > 0) {
-        val d = number % base
-        var symbol = ""
-        if (d > 9) symbol += 'a' + (d - 10) else symbol += "$d"
-        line += symbol
-        number /= base
+    val s = buildString {
+        var number = n
+        while (number > 0) {
+            val d = number % base
+            var symbol = ""
+            if (d > 9) symbol += 'a' + (d - 10) else symbol += "$d"
+            append(symbol)
+            number /= base
+        }
+        if (n == 0) append("0")
     }
-    if (n == 0) line += "0"
-    return line.reversed()
+    return s.reversed()
 }
 
 /**
