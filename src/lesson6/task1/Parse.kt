@@ -87,7 +87,7 @@ fun dateStrToDigit(str: String): String {
     }
     if (month !in 1..12) return ""
     val year = parts[2].toInt()
-    if (day >= daysInMonth(month, year)) return ""
+    if (day > daysInMonth(month, year)) return ""
     else return String.format("%02d.%02d.%d", day, month, year)
 }
 
@@ -121,7 +121,7 @@ fun dateDigitToStr(digital: String): String {
     date.add(month)
     val year = parts[2]
     date.add(year)
-    if (day.toInt() >= daysInMonth(monthNumber, year.toInt())) return ""
+    if (day.toInt() > daysInMonth(monthNumber, year.toInt())) return ""
     else return date.joinToString(separator = " ")
 }
 
@@ -215,6 +215,7 @@ fun mostExpensive(description: String): String = TODO()
 fun fromRoman(roman: String): Int {
     val numbers = listOf(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
     val romanNumbers = listOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
+    if (roman == "") return -1
     var romanNumber = roman
     var number = 0
     while (romanNumber != "") {
