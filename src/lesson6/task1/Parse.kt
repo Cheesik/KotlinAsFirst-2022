@@ -80,6 +80,8 @@ fun dateStrToDigit(str: String): String {
         "октября", "ноября", "декабря")
     val parts = str.split(" ")
     if (parts.size != 3) return ""
+    for (i in parts[0]) if (i.isDigit()) continue else return ""
+    for (i in parts[2]) if (i.isDigit()) continue else return ""
     val day = parts[0].toInt()
     var month = 0
     for (i in 0 until months.size) {
